@@ -1,0 +1,3 @@
+100|Bananer|12,50|PerKilo
+200|Kaffe|35,50
+300|Spaghetti|10,50|PerPiece
