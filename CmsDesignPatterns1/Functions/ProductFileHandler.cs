@@ -11,23 +11,41 @@ namespace CmsDesignPatterns1.Functions
     {
         List<Product> GetAll();
         void SaveProduct(Product p);
+        Product GetProduct(string productId);
     }
 
     class ProductDatabaseHandler : IProductRepository
     {
         public List<Product> GetAll()
         {
-            throw new NotImplementedException();
+            //Against db...
+            //men nu fejkar vi
+            return new List<Product>
+            {
+                new Product("50"),
+                new Product("20"),
+                new Product("30"),
+            };
+        }
+
+        public Product GetProduct(string productId)
+        {
+            return GetAll().FirstOrDefault(r => r.Id == productId);
         }
 
         public void SaveProduct(Product p)
         {
-            throw new NotImplementedException();
+            //Save to db
         }
     }
 
     class ProductFileHandler : IProductRepository
     {
+        public Product GetProduct(string productId)
+        {
+            return GetAll().FirstOrDefault(r => r.Id == productId);
+        }
+
         public List<Product> GetAll()
         {
             var products = new List<Product>();

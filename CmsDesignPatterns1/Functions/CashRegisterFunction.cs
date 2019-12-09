@@ -9,6 +9,12 @@ namespace CmsDesignPatterns1.Functions
 {
     class CashRegisterFunctions
     {
+        private readonly IProductRepository productRepository;
+
+        public CashRegisterFunctions(IProductRepository productRepository)
+        {
+            this.productRepository = productRepository;
+        }
         public void Run()
     {
         while (true)
@@ -50,22 +56,12 @@ namespace CmsDesignPatterns1.Functions
             Console.WriteLine("Felaktigt antal"); return false;
         }
 
-        Product selectedProduct = null;
-        //Check if product exists!
-        //Thank god filehandling and splitting is so EASY in C#
-        foreach(var fileRow in System.IO.File.ReadAllLines("..\\..\\Products-Data.txt"))
-        {
-                var prodParts = fileRow.Split('|');
-                if (prodParts.Length < 4) continue;
-                if(productId == prodParts[0])
-                {
-                    selectedProduct = new Product(productId);
-                    selectedProduct.Name = prodParts[1];
-                    selectedProduct.Price = Convert.ToDecimal(prodParts[2]);
-                }
-        }
+        var selectedProduct = productRepository.GetProduct(productId);
         if(selectedProduct == null)
-            { Console.WriteLine("Produkt saknas"); return false; }
+        { 
+            Console.WriteLine("Produkt saknas"); 
+            return false; 
+        }
         receipt.AddToReceipt(selectedProduct, quantity);
         return true;
 

@@ -10,9 +10,10 @@ namespace CmsDesignPatterns1
     {
         static void Main(string[] args)
         {
-            var productRepository = new Functions.ProductDatabaseHandler();
+            var productRepository = new Functions.ProductFileHandler();
+
             var adminFunctions = new Functions.AdminFunctions(productRepository);
-            var cashRegisterFunctions = new Functions.CashRegisterFunctions();
+            var cashRegisterFunctions = new Functions.CashRegisterFunctions(productRepository);
 
             while (true)
             {
