@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Functions\AdminFunctions.cs" />
     <Compile Include="Functions\CashRegisterFunction.cs" />
+    <Compile Include="Functions\ProductFileHandler.cs" />
     <Compile Include="Model\PriceType.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Receipt.cs" />

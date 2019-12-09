@@ -9,6 +9,12 @@ namespace CmsDesignPatterns1.Functions
 {
     class AdminFunctions
     {
+        private readonly IProductRepository productRepository;
+
+        public AdminFunctions(IProductRepository productRepository)
+        {
+            this.productRepository = productRepository;
+        }
         public void Run()
         {
             while (true)
@@ -29,18 +35,8 @@ namespace CmsDesignPatterns1.Functions
 
         private void ChangeProduct()
         {
-            var products = new List<Product>();
-            //Thank god filehandling and splitting is so EASY in C#
-            foreach (var fileRow in System.IO.File.ReadAllLines("..\\..\\Products-Data.txt"))
-            {
-                var prodParts = fileRow.Split('|');
-                if (prodParts.Length < 4) continue;
-                var selectedProduct = new Product(prodParts[0]);
-                selectedProduct.Name = prodParts[1];
-                selectedProduct.Price = Convert.ToDecimal(prodParts[2]);
-                products.Add(selectedProduct);
-            }
-
+            
+            var products = productRepository.GetAll();
 
             var menu = new UI.SelectionMenu("Select which product to change", products.Select(r=>r.Name).ToArray()  , true);
             int sel = menu.RenderAndSelect(true);
@@ -55,22 +51,7 @@ namespace CmsDesignPatterns1.Functions
             Console.WriteLine("press a key");
             Console.ReadKey();
             p.Price = p.Price + 100;
-
-            //Save to file
-            var allLines = System.IO.File.ReadAllLines("..\\..\\Products-Data.txt");
-            for(int i = 0; i < allLines.Length; i++)
-            {
-                var fileRow = allLines[i];
-                var prodParts = fileRow.Split('|');
-                if (prodParts.Length < 4) continue;
-                if(prodParts[0] == p.Id)
-                {
-                    var newRow = p.Id + "|" + p.Name + "|" + p.Price.ToString();
-                    allLines[i] = newRow;
-                }
-            }
-            System.IO.File.WriteAllLines("..\\..\\Products-Data.txt",allLines);
-
+            productRepository.SaveProduct(p);
         }
 
         private void NewProduct()
